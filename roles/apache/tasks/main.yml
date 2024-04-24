@@ -1,12 +1,17 @@
-- name: Install Apache Package
-  import_tasks: install_sw.yml
-  tags: installsw
+#- name: Install Apache Package
+#  import_tasks: install_sw.yml
+#  tags: installsw
 
-- name: Configure Apache RedHat Family
-  import_tasks: httpd_redhat.yml
-  when: ansible_os_family == 'RedHat'
-  tags: installsw
+#- name: Configure Apache RedHat Family
+#  import_tasks: httpd_redhat.yml
+#  when: ansible_os_family == 'RedHat'
+#  tags: installsw
 
-- name: Configure VH
-  import_tasks: vh.yml
-  tags: confvh
+#- name: Configure VH
+#  import_tasks: vh.yml
+#  tags: confvh
+
+- name: Start Debian Family
+  import_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+  tags: installsw

@@ -1,0 +1,68 @@
+- name: Install Package Debian Family
+  ansible.builtin.apt:
+     name: "{{apt_package}}"
+     state: present
+  ignore_errors: yes
+
+- name: Install virtual host Debian Family
+  template:
+     src: virtualhost_debian.j2
+     dest: "/etc/apache2/sites-available/{{item.name}}.conf"
+     owner: 'root'
+     group: 'root'
+     mode: 0644
+  with_items:
+     - "{{virtualhost}}"
+  when:
+    - item.name |length > 0
+  notify: Restart Apache Debian Family
+  tags: vhconf
+
+- name: Add ServerAlias Debian Family
+  lineinfile:
+      path: "/etc/apache2/sites-available/{{item.0.name}}.conf"
+      insertafter: "^    ServerName"
+      line: "    ServerAlias {{item.1}}"
+  with_subelements:
+    - "{{virtualhost}}"
+    - serveralias
+  when: item.0.name |length > 0
+  notify: Restart Apache Debian Family
+  tags: vhconf
+
+- name: Create dir log Debian Family
+  ansible.builtin.file:
+      path: "/var/log/apache2/{{item.name}}"
+      state: directory
+      owner: root
+      group: adm
+  with_items:
+     - "{{virtualhost}}"
+  when:
+    - item.name |length > 0
+  notify: Restart Apache Debian Family
+
+- name: Create docroot Debian Family
+  ansible.builtin.file:
+      path: "{{item.docroot}}"
+      state: directory
+      owner: root
+      group: adm
+  with_items:
+     - "{{virtualhost}}"
+  when: 
+    - item.name |length > 0
+  notify: Restart Apache Debian Family
+
+- name: Enable/Disable Sites For Debian Family
+  ansible.builtin.file:
+    state: link
+    src: "/etc/apache2/sites-available/{{item.name}}.conf"
+    dest: "/etc/apache2/sites-enabled/{{item.name}}.conf"
+  with_items:
+     - "{{virtualhost}}"
+  when:
+    - item.sites_enable == 'en'
+    - item.name |length > 0
+  notify: Restart Apache Debian Family
+  tags: endis_site
