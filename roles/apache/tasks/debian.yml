@@ -54,7 +54,7 @@
     - item.name |length > 0
   notify: Restart Apache Debian Family
 
-- name: Enable/Disable Sites For Debian Family
+- name: Enable Sites For Debian Family
   ansible.builtin.file:
     state: link
     src: "/etc/apache2/sites-available/{{item.name}}.conf"
@@ -62,17 +62,17 @@
   with_items:
      - "{{virtualhost}}"
   when:
-    - item.sites_enable == 'en'
+    - item.sites_enable == 'enabled'
     - item.name |length > 0
   notify: Restart Apache Debian Family
   tags: endis_site
 
-- name: Remove symlink
+- name: Disable Sites For Debian Family
   file:
     path: "/etc/apache2/sites-enabled/{{item.name}}.conf"
     state: absent
   with_items:
     - "{{virtualhost}}"
   when:
-    - item.sites_enable == 'dis'
+    - item.sites_enable == 'disabled'
     - item.name |length > 0

@@ -10,11 +10,11 @@ all:
                 - name: 'www.aslcn2.it'
                   docroot: '/var/www/html/www.aslcn2.it'
                   serveralias: ['aslcn2.it', 'albofornitori.aslcn2.it']
-                  sites_enable: '' # en: enabled dis: disabled
+                  sites_enable: 'enabled' # enabled/disabled
             ws-svil-sitoaslcn2-aslcn2.site02.nivolapiemonte.it:
               ansible_ssh_private_key_file: ./privatekeys/ws-sitoaslcn2-aslcn2.key
               virtualhost:
                 - name: www.staging-web.aslcn2.it
                   docroot: /var/www/html/www.staging-web.aslcn2.it
                   serveralias: [staging-web.aslcn2.it, albofornitori.staging-web.aslcn2.it]
-                  sites_enable: '' # en: enabled dis: disabled
+                  sites_enable: 'enabled' # en: enabled/disabled
