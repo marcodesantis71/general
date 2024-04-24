@@ -66,3 +66,13 @@
     - item.name |length > 0
   notify: Restart Apache Debian Family
   tags: endis_site
+
+- name: Remove symlink
+  file:
+    path: "/etc/apache2/sites-enabled/{{item.name}}.conf"
+    state: absent
+  with_items:
+    - "{{virtualhost}}"
+  when:
+    - item.sites_enable == 'dis'
+    - item.name |length > 0
