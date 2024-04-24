@@ -1,0 +1,25 @@
+/var/log/httpd/*log {
+    missingok
+    daily
+    notifempty
+    sharedscripts
+    delay
+    rotate 7
+    compress
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}
+
+/var/log/httpd/*/*log {
+    missingok
+    daily
+    notifempty
+    sharedscripts
+    delay
+    rotate 7
+    compress
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}

@@ -1,0 +1,15 @@
+- name: Restart Apache Debian Family
+  service:
+    name: apache2
+    state: restarted
+    daemon_reload: true
+    enabled: yes
+  tags: restart_apache_debian
+
+- name: Restart Apache RedHat Family
+  service:
+    name: httpd
+    state: restarted
+    daemon_reload: true
+    enabled: yes
+  tags: restart_apache_redhat
